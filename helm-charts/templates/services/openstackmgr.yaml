@@ -1,0 +1,22 @@
+{{- if .Values.openstackmgr.enabled -}}
+apiVersion: v1
+kind: Service
+metadata:
+{{- if .Values.openstackmgr.service.annotations }}
+  annotations:
+{{ toYaml .Values.openstackmgr.service.annotations | indent 4 }}
+{{- end }}
+  name: {{ template "dvof.openstackmgr.fullname" . }}
+  labels:
+    {{- include "dvof.openstackmgr.labels" . | nindent 4 }}
+    service: openstackmgr
+{{ include "dvof.namespace" . | indent 2 }}
+spec:
+  ports:
+  - port: {{ .Values.openstackmgr.service.servicePort }}
+    name: http
+  selector:
+    {{- include "dvof.openstackmgr.matchLabels" . | nindent 4 }}
+{{- end }}
+
+

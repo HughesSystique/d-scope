@@ -1,0 +1,149 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: dvof-gateway
+spec:
+  selector:
+    istio: ingressgateway # use istio default controller
+  servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+    - "*"
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: dvof-frontend
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - dvof-gateway
+  http:
+  - match:
+    - uri:
+        prefix: /
+    route:
+    - destination:
+        host: {{ template "dvof.frontend.fullname" . }}
+        port:
+          number: 3000
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: dvof-ns
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - dvof-gateway
+  http:
+  - match:
+    - uri:
+        prefix: /ns
+    route:
+    - destination:
+        host: {{ template "dvof.nsmgr.fullname" . }}
+        port:
+          number: 8081
+
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: dvof-site
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - dvof-gateway
+  http:
+  - match:
+    - uri:
+        prefix: /site
+    route:
+    - destination:
+        host: {{ template "dvof.sitemgr.fullname" . }}
+        port:
+          number: 8082
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: dvof-edge-gw
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - dvof-gateway
+  http:
+  - match:
+    - uri:
+        prefix: /edge
+    route:
+    - destination:
+        host: {{ template "dvof.sitemgr.fullname" . }}
+        port:
+          number: 8082
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: dvof-sdnc
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - dvof-gateway
+  http:
+  - match:
+    - uri:
+        prefix: /sdn-c/sdn
+    route:
+    - destination:
+        host: {{ template "dvof.sdncmgr.fullname" . }}
+        port:
+          number: 8086
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: dvof-sdnc-device
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - dvof-gateway
+  http:
+  - match:
+    - uri:
+        prefix: /device
+    route:
+    - destination:
+        host: {{ template "dvof.sdncmgr.fullname" . }}
+        port:
+          number: 8086
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: dvof-sdnc-tunnel
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - dvof-gateway
+  http:
+  - match:
+    - uri:
+        prefix: /tunnel
+    route:
+    - destination:
+        host: {{ template "dvof.sdncmgr.fullname" . }}
+        port:
+          number: 8086
+

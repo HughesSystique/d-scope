@@ -1,0 +1,38 @@
+---
+{{- if .Values.nsmgr.enabled -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "dvof.nsmgr.fullname" . }}
+  labels:
+    {{- include "dvof.nsmgr.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.nsmgr.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "dvof.nsmgr.matchLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "dvof.nsmgr.labels" . | nindent 8 }}
+        {{- if .Values.nsmgr.podLabels}}
+        {{ toYaml .Values.nsmgr.podLabels | nindent 8 }}
+        {{- end}}
+    spec:
+      containers:
+      - name: {{ template "dvof.name" . }}-{{ .Values.nsmgr.name }}
+        image: "{{ .Values.nsmgr.image.repository }}:{{ .Values.nsmgr.image.tag }}"
+        imagePullPolicy: "{{ .Values.nsmgr.image.pullPolicy }}"
+        command: ["./nsmgr"]
+        #args: ["-loglevel DEBUG" ,"-nsmgrIP 192.168.121.127", "-edgeAppImage app_video_play.tar", "-dcAppImage downstream_video_v3"]
+        args:
+               - "-loglevel=DEBUG"
+               - -opnessmgrip={{ template "dvof.opennessmgr.fullname" . }}
+               - -opnstckmgrip={{ template "dvof.openstackmgr.fullname" . }}
+               - -sdncmgrip={{ template "dvof.sdncmgr.fullname" . }}
+               - -sitemgrip={{ template "dvof.sitemgr.fullname" . }}
+               - -etcdendpoint={{ template "dvof.etcd.fullname" . }}:{{ .Values.etcd.port }}
+        ports:
+        - containerPort: 8081
+{{- end }}
+

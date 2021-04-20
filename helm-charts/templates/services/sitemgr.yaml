@@ -1,0 +1,21 @@
+{{- if .Values.sitemgr.enabled -}}
+apiVersion: v1
+kind: Service
+metadata:
+{{- if .Values.sitemgr.service.annotations }}
+  annotations:
+{{ toYaml .Values.sitemgr.service.annotations | indent 4 }}
+{{- end }}
+  name: {{ template "dvof.sitemgr.fullname" . }}
+  labels:
+    {{- include "dvof.sitemgr.labels" . | nindent 4 }}
+    service: sitemgr
+{{ include "dvof.namespace" . | indent 2 }}
+spec:
+  ports:
+  - port: {{ .Values.sitemgr.service.servicePort }}
+    name: http
+  selector:
+    {{- include "dvof.sitemgr.matchLabels" . | nindent 4 }}
+{{- end }}
+

@@ -1,0 +1,33 @@
+---
+{{- if .Values.opennessmgr.enabled -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "dvof.opennessmgr.fullname" . }}
+  labels:
+    {{- include "dvof.opennessmgr.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.opennessmgr.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "dvof.opennessmgr.matchLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "dvof.opennessmgr.labels" . | nindent 8 }}
+        {{- if .Values.opennessmgr.podLabels}}
+        {{ toYaml .Values.opennessmgr.podLabels | nindent 8 }}
+        {{- end}}
+    spec:
+      containers:
+      - name: {{ template "dvof.name" . }}-{{ .Values.opennessmgr.name }}
+        image: "{{ .Values.opennessmgr.image.repository }}:{{ .Values.opennessmgr.image.tag }}"
+        imagePullPolicy: "{{ .Values.opennessmgr.image.pullPolicy }}"
+        command: ["./opennessmgr"]
+        #args: ["-loglevel DEBUG" ,"-opennessmgrIP 192.168.121.127", "-edgeAppImage app_video_play.tar", "-dcAppImage downstream_video_v3"]
+        args:
+               - "-loglevel=DEBUG"
+        ports:
+        - containerPort: 8083
+{{- end }}
+

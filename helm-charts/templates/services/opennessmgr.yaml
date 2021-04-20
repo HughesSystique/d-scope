@@ -1,0 +1,21 @@
+{{- if .Values.opennessmgr.enabled -}}
+apiVersion: v1
+kind: Service
+metadata:
+{{- if .Values.opennessmgr.service.annotations }}
+  annotations:
+{{ toYaml .Values.opennessmgr.service.annotations | indent 4 }}
+{{- end }}
+  name: {{ template "dvof.opennessmgr.fullname" . }}
+  labels:
+    {{- include "dvof.opennessmgr.labels" . | nindent 4 }}
+    service: opennessmgr
+{{ include "dvof.namespace" . | indent 2 }}
+spec:
+  ports:
+  - port: {{ .Values.opennessmgr.service.servicePort }}
+    name: http
+  selector:
+    {{- include "dvof.opennessmgr.matchLabels" . | nindent 4 }}
+{{- end }}
+

@@ -1,0 +1,6 @@
+# requirements.yaml
+dependencies:
+- name: etcd
+  version: "0.7.7"
+  repository: "https://charts.helm.sh/incubator"
+

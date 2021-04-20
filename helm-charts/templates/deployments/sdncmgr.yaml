@@ -1,0 +1,35 @@
+---
+{{- if .Values.sdncmgr.enabled -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "dvof.sdncmgr.fullname" . }}
+  labels:
+    {{- include "dvof.sdncmgr.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.sdncmgr.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "dvof.sdncmgr.matchLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "dvof.sdncmgr.labels" . | nindent 8 }}
+        {{- if .Values.sdncmgr.podLabels}}
+        {{ toYaml .Values.sdncmgr.podLabels | nindent 8 }}
+        {{- end}}
+    spec:
+      containers:
+      - name: {{ template "dvof.name" . }}-{{ .Values.sdncmgr.name }}
+        image: "{{ .Values.sdncmgr.image.repository }}:{{ .Values.sdncmgr.image.tag }}"
+        imagePullPolicy: "{{ .Values.sdncmgr.image.pullPolicy }}"
+        command: ["./sdncmgr"]
+        #args: ["-loglevel DEBUG" ,"-sdncmgrIP 192.168.121.127", "-edgeAppImage app_video_play.tar", "-dcAppImage downstream_video_v3"]
+        args:
+               - "-loglevel=DEBUG"
+               - -etcdendpoint={{ template "dvof.etcd.fullname" . }}:{{ .Values.etcd.port }}
+        ports:
+        - containerPort: 8086
+{{- end }}
+
+

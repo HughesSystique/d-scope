@@ -1,0 +1,21 @@
+{{- if .Values.nsmgr.enabled -}}
+apiVersion: v1
+kind: Service
+metadata:
+{{- if .Values.nsmgr.service.annotations }}
+  annotations:
+{{ toYaml .Values.nsmgr.service.annotations | indent 4 }}
+{{- end }}
+  name: {{ template "dvof.nsmgr.fullname" . }}
+  labels:
+    {{- include "dvof.nsmgr.labels" . | nindent 4 }}
+    service: nsmgr
+{{ include "dvof.namespace" . | indent 2 }}
+spec:
+  ports:
+  - port: {{ .Values.nsmgr.service.servicePort }}
+    name: http
+  selector:
+    {{- include "dvof.nsmgr.matchLabels" . | nindent 4 }}
+{{- end }}
+

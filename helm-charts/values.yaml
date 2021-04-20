@@ -1,0 +1,270 @@
+# Default values for dvof.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: false
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  hosts:
+    - host: chart-example.local
+      paths: []
+
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+etcd:
+  ## If false, etcd will not be installed
+  ##
+  name: etcd
+  port: 2379
+
+
+nsmgr:
+  ## If false, nsmgr will not be installed
+  ##
+  replicaCount: 1
+  enabled: true
+  name: nsmgr
+  podLabels: {}
+  image:
+    repository: hspl/d-scope-nsmgr
+    tag: 1
+    pullPolicy: IfNotPresent
+  service:
+    annotations: {}
+    labels: {}
+    clusterIP: ""
+
+    ## Enabling peer mesh service end points for enabling the HA alert manager
+    ## Ref: https://github.com/prometheus/alertmanager/blob/master/README.md
+    # enableMeshPeer : true
+
+    ## List of IP addresses at which the alertmanager service is available
+    ## Ref: https://kubernetes.io/docs/user-guide/services/#external-ips
+    ##
+    externalIPs: []
+
+    loadBalancerIP: ""
+    loadBalancerSourceRanges: []
+    servicePort: 8081
+    # nodePort: 30000
+    sessionAffinity: None
+    type: ClusterIP
+
+
+
+opennessmgr:
+  ## If false, nsmgr will not be installed
+  ##
+  replicaCount: 1
+  enabled: true
+  name: opennessmgr
+  podLabels: {}
+  image:
+    repository: hspl/d-scope-opennessmgr
+    tag: 1
+    pullPolicy: IfNotPresent
+  service:
+    annotations: {}
+    labels: {}
+    clusterIP: ""
+
+    ## Enabling peer mesh service end points for enabling the HA alert manager
+    ## Ref: https://github.com/prometheus/alertmanager/blob/master/README.md
+    # enableMeshPeer : true
+
+    ## List of IP addresses at which the alertmanager service is available
+    ## Ref: https://kubernetes.io/docs/user-guide/services/#external-ips
+    ##
+    externalIPs: []
+
+    loadBalancerIP: ""
+    loadBalancerSourceRanges: []
+    servicePort: 8083
+    # nodePort: 30000
+    sessionAffinity: None
+    type: ClusterIP
+
+
+openstackmgr:
+  ## If false, nsmgr will not be installed
+  ##
+  replicaCount: 1
+  enabled: true
+  name: openstackmgr
+  podLabels: {}
+  image:
+    repository: hspl/d-scope-openstackmgr
+    tag: 1
+    pullPolicy: IfNotPresent
+  service:
+    annotations: {}
+    labels: {}
+    clusterIP: ""
+
+    ## Enabling peer mesh service end points for enabling the HA alert manager
+    ## Ref: https://github.com/prometheus/alertmanager/blob/master/README.md
+    # enableMeshPeer : true
+
+    ## List of IP addresses at which the alertmanager service is available
+    ## Ref: https://kubernetes.io/docs/user-guide/services/#external-ips
+    ##
+    externalIPs: []
+
+    loadBalancerIP: ""
+    loadBalancerSourceRanges: []
+    servicePort: 8085
+    # nodePort: 30000
+    sessionAffinity: None
+    type: ClusterIP
+
+sdncmgr:
+  ## If false, nsmgr will not be installed
+  ##
+  replicaCount: 1
+  enabled: true
+  name: sdncmgr
+  podLabels: {}
+  image:
+    repository: hspl/d-scope-sdncmgr
+    tag: 1
+    pullPolicy: IfNotPresent
+  service:
+    annotations: {}
+    labels: {}
+    clusterIP: ""
+
+    ## Enabling peer mesh service end points for enabling the HA alert manager
+    ## Ref: https://github.com/prometheus/alertmanager/blob/master/README.md
+    # enableMeshPeer : true
+
+    ## List of IP addresses at which the alertmanager service is available
+    ## Ref: https://kubernetes.io/docs/user-guide/services/#external-ips
+    ##
+    externalIPs: []
+
+    loadBalancerIP: ""
+    loadBalancerSourceRanges: []
+    servicePort: 8086
+    # nodePort: 30000
+    sessionAffinity: None
+    type: ClusterIP
+
+
+sitemgr:
+  ## If false, nsmgr will not be installed
+  ##
+  replicaCount: 1
+  enabled: true
+  name: sitemgr
+  podLabels: {}
+  image:
+    repository: hspl/d-scope-sitemgr
+    tag: 1
+    pullPolicy: IfNotPresent
+  service:
+    annotations: {}
+    labels: {}
+    clusterIP: ""
+
+    ## Enabling peer mesh service end points for enabling the HA alert manager
+    ## Ref: https://github.com/prometheus/alertmanager/blob/master/README.md
+    # enableMeshPeer : true
+
+    ## List of IP addresses at which the alertmanager service is available
+    ## Ref: https://kubernetes.io/docs/user-guide/services/#external-ips
+    ##
+    externalIPs: []
+
+    loadBalancerIP: ""
+    loadBalancerSourceRanges: []
+    servicePort: 8082
+    # nodePort: 30000
+    sessionAffinity: None
+    type: ClusterIP
+
+
+
+frontend:
+  ## If false, nsmgr will not be installed
+  ##
+  replicaCount: 1
+  enabled: false
+  name: frontend
+  podLabels: {}
+  image:
+    repository: hspl/d-scope-frontend
+    tag: latest
+    pullPolicy: Never
+  service:
+    annotations: {}
+    labels: {}
+    clusterIP: ""
+
+    ## Enabling peer mesh service end points for enabling the HA alert manager
+    ## Ref: https://github.com/prometheus/alertmanager/blob/master/README.md
+    # enableMeshPeer : true
+
+    ## List of IP addresses at which the alertmanager service is available
+    ## Ref: https://kubernetes.io/docs/user-guide/services/#external-ips
+    ##
+    externalIPs: []
+
+    loadBalancerIP: ""
+    loadBalancerSourceRanges: []
+    servicePort: 8089
+    # nodePort: 30000
+    sessionAffinity: None
+    type: ClusterIP
+

@@ -1,0 +1,22 @@
+{{- if .Values.sdncmgr.enabled -}}
+apiVersion: v1
+kind: Service
+metadata:
+{{- if .Values.sdncmgr.service.annotations }}
+  annotations:
+{{ toYaml .Values.sdncmgr.service.annotations | indent 4 }}
+{{- end }}
+  name: {{ template "dvof.sdncmgr.fullname" . }}
+  labels:
+    {{- include "dvof.sdncmgr.labels" . | nindent 4 }}
+    service: sdncmgr
+{{ include "dvof.namespace" . | indent 2 }}
+spec:
+  ports:
+  - port: {{ .Values.sdncmgr.service.servicePort }}
+    name: http
+  selector:
+    {{- include "dvof.sdncmgr.matchLabels" . | nindent 4 }}
+{{- end }}
+
+
