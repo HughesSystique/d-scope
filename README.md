@@ -9,7 +9,7 @@ Helm chart in this repository can be used to deploy D-SCOPE on K8s cluster. Thes
 4. hspl/d-scope-nsmgr
 5. hspl/d-scope-sitemgr
 
-In case, your K8s deployment does not have internet access, you can download D-SCOPE images from docker hub and then add them on you K8s worker nodes or you can push the downloaded images in your local docker registery (if K8s cluster is pointing to it). 
+In case, your K8s deployment does not have internet access, you can download D-SCOPE images from docker hub and then add them on you K8s worker nodes or you can push the downloaded images in your local docker registry (if K8s cluster is pointing to it). 
 
 ### Pre-requisites
 #### Install Istio on K8s Cluster
@@ -43,7 +43,7 @@ In case, your K8s deployment does not have internet access, you can download D-S
   curl -i -X GET -H "Accept: application/json" "http://$INGRESS_HOST:$INGRESS_PORT/device"
   curl -i -X GET -H "Accept: application/json" "http://$INGRESS_HOST:$INGRESS_PORT/tunnel"
   ```
-- On checking  SDN Controller registered with D-SCOPE using following command, it will return 404 response code.
+- On checking SDN Controller registered with D-SCOPE using following command, it will return 404 response code.
   ```
   curl -i -X GET -H "Accept: application/json" "http://$INGRESS_HOST:$INGRESS_PORT/sdn-c/sdn"
   ```
@@ -58,4 +58,4 @@ In case, your K8s deployment does not have internet access, you can download D-S
   kubectl delete namespace dscope
   ```
   
-To find more about how to use D-SCOPE to orchetestrate workloads across different sites, please contact HSC sales.
+To find more about how to use D-SCOPE to orchestrate workloads across different sites, please contact HSC sales.
